@@ -3,29 +3,46 @@
 body {
 	width: 800px;
 	margin: auto;
+	font-size: 12px;
+	color: darkgray;
 }
 h1 {
 	text-align: center;
 	font-size: 48px;
+	color: black;
+}
+.menu {
+	list-style-type: none;
+	padding: 0px;
 }
 .menu li {
-	list-style-type: none;
 	display: inline-block;
 	padding: 5px;
-	border: 1px solid black;
+	border: 1px solid darkblue;
+	border-radius: 2px;
 	background-color: blue;
 }
 .menu li > a {
 	color: white;
 	text-decoration: none;
 }
-.text {
-	font-size: 12px;
-	color: darkgray;
-}
 .foot {
 	color: white;
 	background-color: black;
-	font-size: 12px;
 	text-align: right;
+}
+.form select[id="salutation"] {
+	font-size: 12px;
+	color: darkgray;
+}
+.form input[type="text"], input[type="email"], input[type="tel"], textarea {
+	width: 400px;
+	font-size: 12px;
+	color: darkgray;
+}
+.form label{
+	display: inline-block;
+	width: 100px;
+	padding: 5px;
+	text-align: left;
 }
