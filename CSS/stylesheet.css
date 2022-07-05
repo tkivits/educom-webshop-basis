@@ -1,1 +1,6 @@
 /* Cascade Style Sheet for this website */
+
+body {
+	width: 800px;
+	margin: auto;
+}
