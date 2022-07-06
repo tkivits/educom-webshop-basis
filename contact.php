@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	$name = test_input($_POST["name"]);
 	if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
 		$namerr = "Only letters and spaces are allowed";
-	}
+		}
 	}
 	
 	if(empty($_POST["email"])) {
@@ -53,6 +53,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$message = "";
 	} else {
 		$message = test_input($_POST["message"]);
+	}
+	
+	if(empty($salerr) && empty($namerr) && empty($emailerr) && empty($phonerr) && empty($compreferr)) {
+		header("Location: thankyou.html");
 	}
 }
 
