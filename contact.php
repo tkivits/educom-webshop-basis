@@ -8,12 +8,16 @@
 
 <?php
 //variabelen
-$namerr = $emailerr = $phonerr = $compreferr = "";
+$salerr = $namerr = $emailerr = $phonerr = $compreferr = "";
 $sal = $name = $email = $phone = $compref = $message = "";
 
 //variabelen verwerken
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-	$sal = $_POST["salutation"];
+	if(empty($_POST["salutation"])) {
+		$salerr = "Salutation is required";
+	} else {
+		$sal = test_input($_POST["salutation"]);
+	}
 	
 	if(empty($_POST["name"])) {
 		$namerr = "Name is required";
@@ -66,9 +70,11 @@ function test_input($data) {
 <form class="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 	<label for="salutation"></label>
 		<select id="salutation" name="salutation">
-			<option <?php if (isset($sal) && $sal=="mr") echo "checked";?> value="mr">Mr.</option>
-			<option <?php if (isset($sal) && $sal=="email") echo "checked";?> value="mrs">Mrs</option>
-		</select><br>
+			<option value="">Choose</option>
+			<option value="mr" <?php if (isset($sal) && $sal=="mr") echo "selected";?>>Mr.</option>
+			<option value="mrs"<?php if (isset($sal) && $sal=="mrs") echo "selected";?>>Mrs</option>
+		</select>
+		<span> <?php echo $salerr ?></span><br>
 	<label for="name">Name:</label>
 		<input type="text" id="name" name="name" value="<?php echo $name;?>">
 		<span> <?php echo $namerr;?></span><br>
