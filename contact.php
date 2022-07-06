@@ -67,6 +67,8 @@ function test_input($data) {
 	<li><a href="http://localhost/educom-webshop-basis/contact.html">Contact</a></li>
 </ul>
 
+<span class="error">Fields with a * are required!</span>
+<br><br>
 <form class="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 	<label for="salutation"></label>
 		<select id="salutation" name="salutation">
@@ -74,22 +76,27 @@ function test_input($data) {
 			<option value="mr" <?php if (isset($sal) && $sal=="mr") echo "selected";?>>Mr.</option>
 			<option value="mrs"<?php if (isset($sal) && $sal=="mrs") echo "selected";?>>Mrs</option>
 		</select>
-		<span> <?php echo $salerr ?></span><br>
+		<span class="error">* <?php echo $salerr ?></span>
+		<br>
 	<label for="name">Name:</label>
 		<input type="text" id="name" name="name" value="<?php echo $name;?>">
-		<span> <?php echo $namerr;?></span><br>
+		<span class="error">* <?php echo $namerr;?></span>
+		<br>
 	<label for="email">E-mail:</label>
 		<input type="email" id="email" name="email" value="<?php echo $email;?>">
-		<span> <?php echo $emailerr;?></span><br>
+		<span class="error">* <?php echo $emailerr;?></span>
+		<br>
 	<label for="phone">Phone number:</label>
 		<input type="tel" id="phone" name="phone" value="<?php echo $phone;?>">
-		<span> <?php echo $phonerr;?></span><br>
+		<span class="error">* <?php echo $phonerr;?></span>
+		<br>
 	<label for="compref">What is your communication preference?</label>
 	<input type="radio" id="email" name="compref" <?php if (isset($compref) && $compref=="email") echo "checked";?> value="email">
 		<label for="email">E-mail</label>
 	<input type="radio" id="telephone" name="compref" <?php if (isset($compref) && $compref=="telephone") echo "checked";?> value="telephone">
 		<label for="telephone">Telephone</label>
-		<span> <?php echo $compreferr;?></span><br>
+		<span class="error">* <?php echo $compreferr;?></span>
+		<br>
 	<textarea id="message" name="message" rows="8" cols="50">Tell us why you want to contact us!</textarea><br>
 	<input type="submit" value="Submit">
 </form>
