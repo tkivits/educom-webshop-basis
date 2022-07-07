@@ -8,8 +8,8 @@
 
 <?php
 //variabelen
-$salerr = $namerr = $emailerr = $phonerr = $compreferr = "";
-$sal = $name = $email = $phone = $compref = $message = "";
+$salerr = $namerr = $emailerr = $phonerr = $compreferr = $messerr = "";
+$sal = $name = $email = $phone = $compref = $mess = "";
 $valid = False;
 
 //variabelen verwerken
@@ -50,14 +50,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $compref = test_input($_POST["compref"]);
   }
   
-  if(empty($_POST["message"])) {
-    $message = "";
+  if(empty($_POST["mess"])) {
+    $messerr = "A message is required";
   } else {
-    $message = test_input($_POST["message"]);
+    $mess = test_input($_POST["mess"]);
   }
   
 //Als het formulier geen errors heeft bezoeker naar bedankpagina sturen
-  if(empty($salerr) && empty($namerr) && empty($emailerr) && empty($phonerr) && empty($compreferr)) {
+  if(empty($salerr) && empty($namerr) && empty($emailerr) && empty($phonerr) && empty($compreferr) && empty($messagerr)) {
     $valid = True;
   }
 }
@@ -80,51 +80,41 @@ function test_input($data) {
 </ul>
  
  <?php if (!$valid) { ?>
-<span class="error">Fields with a * are required!</span>
-<br><br>
+<div><span class="error">Fields with a * are required!</span></div>
 <form class="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-  <label for="salutation"></label>
+  <div><label for="salutation"></label>
     <select id="salutation" name="salutation">
       <option value="">Choose</option>
       <option value="Mr." <?php if (isset($sal) && $sal=="Mr.") echo "selected";?>>Mr.</option>
       <option value="Mrs"<?php if (isset($sal) && $sal=="Mrs") echo "selected";?>>Mrs</option>
     </select>
-    <span class="error">* <?php echo $salerr ?></span>
-    <br>
-  <label for="name">Name:</label>
+    <span class="error">* <?php echo $salerr ?></span></div>
+  <div><label for="name">Name:</label>
     <input type="text" id="name" name="name" value="<?php echo $name;?>">
-    <span class="error">* <?php echo $namerr;?></span>
-    <br>
-  <label for="email">E-mail:</label>
+    <span class="error">* <?php echo $namerr;?></span></div>
+  <div><label for="email">E-mail:</label>
     <input type="email" id="email" name="email" value="<?php echo $email;?>">
-    <span class="error">* <?php echo $emailerr;?></span>
-    <br>
-  <label for="phone">Phone number:</label>
+    <span class="error">* <?php echo $emailerr;?></span></div>
+  <div><label for="phone">Phone number:</label>
     <input type="tel" id="phone" name="phone" value="<?php echo $phone;?>">
-    <span class="error">* <?php echo $phonerr;?></span>
-    <br>
-  <label for="compref">What is your communication preference?</label>
+    <span class="error">* <?php echo $phonerr;?></span></div>
+  <div><label for="compref">What is your communication preference?</label>
   <input type="radio" id="email" name="compref" <?php if (isset($compref) && $compref=="E-mail") echo "checked";?> value="E-mail">
     <label for="email">E-mail</label>
   <input type="radio" id="telephone" name="compref" <?php if (isset($compref) && $compref=="Telephone") echo "checked";?> value="Telephone">
     <label for="telephone">Telephone</label>
-    <span class="error">* <?php echo $compreferr;?></span>
-    <br>
-  <textarea id="message" name="message" rows="8" cols="50">Tell us why you want to contact us!</textarea><br>
+    <span class="error">* <?php echo $compreferr;?></span></div>
+  <div><textarea id="mess" name="mess" rows="8" cols="50" placeholder= "Tell us why you want to contact us!"><?php echo $mess;?></textarea>
+  <span class="error">* <?php echo $messerr ?></div>
   <input type="submit" value="Submit">
  </form> 
  <?php } else { ?>
  <h1>Thank you for filling in the contact form!</h1>
- <p> Your details are: <?php echo $sal ?> <?php echo $name ?><br>
- Email: <?php echo $email ?><br>
- Telephone: <?php echo $phone ?><br>
- Communication preference: <?php echo $compref ?><br>
- Message: <?php //Ervoor zorgen dat het formulier alleen relevante berichten laat zien
-if ($message == "Tell us why you want to contact us!") {
-echo "";
- } else {
-echo $message;
- }?></p><?php } ?>
+ <div>Your details are: <?php echo $sal ?> <?php echo $name ?></div>
+ <div>Email: <?php echo $email ?></div>
+ <div>Telephone: <?php echo $phone ?></div>
+ <div>Communication preference: <?php echo $compref ?></div>
+ <div>Message: <?php echo $mess;} ?></div>
  
 <footer class="foot">
   <p>&copy; 2022 Teun Kivits</p>
