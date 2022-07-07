@@ -85,8 +85,8 @@ function test_input($data) {
   <div><label for="salutation"></label>
     <select id="salutation" name="salutation">
       <option value="">Choose</option>
-      <option value="Mr." <?php if (isset($sal) && $sal=="Mr.") echo "selected";?>>Mr.</option>
-      <option value="Mrs"<?php if (isset($sal) && $sal=="Mrs") echo "selected";?>>Mrs</option>
+      <option value="Mr." <?php if ($sal=="Mr.") echo "selected";?>>Mr.</option>
+      <option value="Mrs"<?php if ($sal=="Mrs") echo "selected";?>>Mrs</option>
     </select>
     <span class="error">* <?php echo $salerr ?></span></div>
   <div><label for="name">Name:</label>
@@ -99,9 +99,9 @@ function test_input($data) {
     <input type="tel" id="phone" name="phone" value="<?php echo $phone;?>">
     <span class="error">* <?php echo $phonerr;?></span></div>
   <div><label for="compref">What is your communication preference?</label>
-  <input type="radio" id="email" name="compref" <?php if (isset($compref) && $compref=="E-mail") echo "checked";?> value="E-mail">
+  <input type="radio" id="email" name="compref" <?php if ($compref=="E-mail") echo "checked";?> value="E-mail">
     <label for="email">E-mail</label>
-  <input type="radio" id="telephone" name="compref" <?php if (isset($compref) && $compref=="Telephone") echo "checked";?> value="Telephone">
+  <input type="radio" id="telephone" name="compref" <?php if ($compref=="Telephone") echo "checked";?> value="Telephone">
     <label for="telephone">Telephone</label>
     <span class="error">* <?php echo $compreferr;?></span></div>
   <div><textarea id="mess" name="mess" rows="8" cols="50" placeholder= "Tell us why you want to contact us!"><?php echo $mess;?></textarea>
