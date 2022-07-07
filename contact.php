@@ -71,7 +71,7 @@ function test_input($data) {
 }
 ?>
 
-<h1>Contact</h1>
+<h1 class="header">Contact</h1>
 
 <ul class="menu">
   <li><a href="index.html">Home</a></li>
@@ -104,9 +104,9 @@ function test_input($data) {
     <span class="error">* <?php echo $phonerr;?></span>
     <br>
   <label for="compref">What is your communication preference?</label>
-  <input type="radio" id="email" name="compref" <?php if (isset($compref) && $compref=="email") echo "checked";?> value="E-mail">
+  <input type="radio" id="email" name="compref" <?php if (isset($compref) && $compref=="E-mail") echo "checked";?> value="E-mail">
     <label for="email">E-mail</label>
-  <input type="radio" id="telephone" name="compref" <?php if (isset($compref) && $compref=="telephone") echo "checked";?> value="Telephone">
+  <input type="radio" id="telephone" name="compref" <?php if (isset($compref) && $compref=="Telephone") echo "checked";?> value="Telephone">
     <label for="telephone">Telephone</label>
     <span class="error">* <?php echo $compreferr;?></span>
     <br>
