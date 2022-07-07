@@ -42,6 +42,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $phonerr = "Phone number is required";
   } else {
     $phone = test_input($_POST["phone"]);
+	if (!preg_match("/^0[0-9]{1,3}-{0,1}[0-9]{6,8}$/",$phone)) {
+		$phonerr = "Invalid phone number";
+	}
   }
   
   if(empty($_POST["compref"])) {
