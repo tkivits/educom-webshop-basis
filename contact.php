@@ -10,6 +10,7 @@
 //variabelen
 $salerr = $namerr = $emailerr = $phonerr = $compreferr = "";
 $sal = $name = $email = $phone = $compref = $message = "";
+$valid = False;
 
 //variabelen verwerken
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -57,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	
 //Als het formulier geen errors heeft bezoeker naar bedankpagina sturen
 	if(empty($salerr) && empty($namerr) && empty($emailerr) && empty($phonerr) && empty($compreferr)) {
-		header("Location: thankyou.html");
+		$valid = True;
 	}
 }
 
@@ -77,15 +78,16 @@ function test_input($data) {
 	<li><a href="/educom-webshop-basis/about.html">About</a></li>
 	<li><a href="/educom-webshop-basis/contact.php">Contact</a></li>
 </ul>
-
+ 
+ <?php if (!$valid) { ?>
 <span class="error">Fields with a * are required!</span>
 <br><br>
 <form class="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 	<label for="salutation"></label>
 		<select id="salutation" name="salutation">
 			<option value="">Choose</option>
-			<option value="mr" <?php if (isset($sal) && $sal=="mr") echo "selected";?>>Mr.</option>
-			<option value="mrs"<?php if (isset($sal) && $sal=="mrs") echo "selected";?>>Mrs</option>
+			<option value="Mr." <?php if (isset($sal) && $sal=="Mr.") echo "selected";?>>Mr.</option>
+			<option value="Mrs"<?php if (isset($sal) && $sal=="Mrs") echo "selected";?>>Mrs</option>
 		</select>
 		<span class="error">* <?php echo $salerr ?></span>
 		<br>
@@ -110,8 +112,20 @@ function test_input($data) {
 		<br>
 	<textarea id="message" name="message" rows="8" cols="50">Tell us why you want to contact us!</textarea><br>
 	<input type="submit" value="Submit">
-</form>
-
+ </form> 
+ <?php } else { ?>
+ <h1>Thank you for filling in the contact form!</h1>
+ <p> Your details are: <?php echo $sal ?> <?php echo $name ?><br>
+ Email: <?php echo $email ?><br>
+ Telephone: <?php echo $phone ?><br>
+ Communication preference: <?php echo $compref ?><br>
+ Message: <?php //Ervoor zorgen dat het formulier alleen relevante berichten laat zien
+if ($message == "Tell us why you want to contact us!") {
+echo "";
+ } else {
+echo $message;
+ }?></p><?php } ?>
+ 
 <footer class="foot">
 	<p>&copy; 2022 Teun Kivits</p>
 </footer>
