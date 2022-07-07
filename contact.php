@@ -55,6 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$message = test_input($_POST["message"]);
 	}
 	
+//Als het formulier geen errors heeft bezoeker naar bedankpagina sturen
 	if(empty($salerr) && empty($namerr) && empty($emailerr) && empty($phonerr) && empty($compreferr)) {
 		header("Location: thankyou.html");
 	}
@@ -72,9 +73,9 @@ function test_input($data) {
 <h1>Contact</h1>
 
 <ul class="menu">
-	<li><a href="http://localhost/educom-webshop-basis/">Home</a></li>
-	<li><a href="http://localhost/educom-webshop-basis/about.html">About</a></li>
-	<li><a href="http://localhost/educom-webshop-basis/contact.html">Contact</a></li>
+	<li><a href="/educom-webshop-basis/">Home</a></li>
+	<li><a href="/educom-webshop-basis/about.html">About</a></li>
+	<li><a href="/educom-webshop-basis/contact.php">Contact</a></li>
 </ul>
 
 <span class="error">Fields with a * are required!</span>
