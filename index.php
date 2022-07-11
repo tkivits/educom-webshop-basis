@@ -7,7 +7,7 @@
 <body>
 
 <?php
-function getRequestedPage(){
+function getRequestedPage(){ //Pagina ophalen
 	if(!isset($_GET['page'])){
 		return 'Home';
 	}
@@ -16,7 +16,7 @@ function getRequestedPage(){
 	}
 }
 
-function showResponsePage($page){
+function showResponsePage($page){ //Weergave van de pagina
 	echo '<h1 class="header">'.$page.'</h1>';
 	Include("menu.php");
 	switch($page)
@@ -27,7 +27,7 @@ function showResponsePage($page){
 		case 'About';
 		  include 'about.php';
 		  break;
-		case 'Contact'; // Nog niet de juiste reactie bij submit!
+		case 'Contact';
 		  include 'contact.php';
 		  break;
 		default; 
