@@ -38,7 +38,6 @@ function showResponsePage($page){
 
 
 $page = getRequestedPage();
-echo "$page";
 showResponsePage($page); ?> 
 
 </body>
