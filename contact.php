@@ -74,15 +74,10 @@ function test_input($data) {
 }
 ?>
 
-<h1 class="header">Contact</h1>
+<?php echo '<h1 class="header">Contact</h1>';
 
-<ul class="menu">
-  <li><a href="index.html">Home</a></li>
-  <li><a href="about.html">About</a></li>
-  <li><a href="contact.php">Contact</a></li>
-</ul>
- 
- <?php if (!$valid) { ?>
+Include("menu.php");
+if (!$valid) { ?>
 <div><span class="error">Fields with a * are required!</span></div>
 <form class="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
   <div><label for="salutation"></label>
@@ -119,10 +114,7 @@ function test_input($data) {
  <div>Communication preference: <?php echo $compref ?></div>
  <div>Message: <?php echo $mess;} ?></div>
  
-<footer class="foot">
-  <p>&copy; 2022 Teun Kivits</p>
-</footer>
-
+<?php Include("footer.php"); ?>
 
 </body>
 </html>
