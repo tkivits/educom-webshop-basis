@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 
 <html>
-<head>
-<link rel="stylesheet" href="CSS/stylesheet.css">
-</head>
 <body>
 
 <?php
@@ -74,9 +71,7 @@ function test_input($data) {
 }
 ?>
 
-<?php echo '<h1 class="header">Contact</h1>';
-
-Include("menu.php");
+<?php
 if (!$valid) { ?>
 <div><span class="error">Fields with a * are required!</span></div>
 <form class="form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
@@ -114,7 +109,5 @@ if (!$valid) { ?>
  <div>Communication preference: <?php echo $compref ?></div>
  <div>Message: <?php echo $mess;} ?></div>
  
-<?php Include("footer.php"); ?>
-
 </body>
 </html>

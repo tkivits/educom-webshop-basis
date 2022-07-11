@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 
 <html>
-<head>
-<link rel="stylesheet" href="CSS/stylesheet.css">
-</head>
 <body>
 
 <footer class="foot">
