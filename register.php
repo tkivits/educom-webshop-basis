@@ -18,9 +18,9 @@ function test_input($data) {
 	return $data;
 }
 
-//Functie check_mail om mail te matchen in users.txt
+//Functie check_existing_mail om mail te matchen in users.txt
 
-function check_mail($data) {
+function check_existing_mail($data) {
 	$checkfile = fread(fopen("Users/users.txt", "r"), filesize("Users/users.txt"));
 	if(strstr($checkfile, $data) !== False) {
 		return True;
@@ -48,7 +48,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			$emailerr = "Invalid e-mail";
 		} else {
-			if (check_mail($email) == True) {
+			if (check_existing_mail($email) == True) {
 				$emailerr = "E-mail already exists";
 			}
 		}
@@ -74,6 +74,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // showRegisterForm
 if(!$valid) { ?>
+<div><span class="error">Fields with a * are required</span></div> 
 <form class="form" method="post" action="<?php echo htmlspecialchars('?page=Register');?>">
   <div><label for="name">Name:</label>
     <input type="text" id="name" name="name" value="<?php echo $name;?>">
@@ -89,7 +90,12 @@ if(!$valid) { ?>
     <span class="error">* <?php echo $pwrepeaterr;?></span></div>
   <input type="submit" value="Submit">
  </form>
-<?php } ?>
+<?php } else {
+	$user = fopen("Users/users.txt", "a");
+	fwrite($user, "$email|$name|$pw\n");
+	fclose($user);
+	echo "Registration succesful!";
+} ?>
 
 </body>
 </html>
