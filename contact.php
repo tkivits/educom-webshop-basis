@@ -70,6 +70,8 @@ function test_input($data) {
   return $data;
 }
 
+//showContactForm
+
 if (!$valid) { ?>
 <div><span class="error">Fields with a * are required!</span></div>
 <form class="form" method="post" action="<?php echo htmlspecialchars('?page=Contact');?>">

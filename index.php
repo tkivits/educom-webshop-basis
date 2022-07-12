@@ -30,6 +30,9 @@ function showResponsePage($page){ //Weergave van de pagina
 		case 'Contact';
 		  include 'contact.php';
 		  break;
+		case 'Register';
+		  include 'register.php';
+		  break;
 		default; 
 		  include 'home.php';
 	}
