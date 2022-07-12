@@ -88,11 +88,11 @@ if(!$valid) { ?>
   <div><label for="password repeat">Repeat password:</label>
     <input type="password" id="pwrepeat" name="pwrepeat" value="<?php echo $pwrepeat;?>">
     <span class="error">* <?php echo $pwrepeaterr;?></span></div>
-  <input type="submit" value="Submit">
+  <input type="submit" value="Register">
  </form>
 <?php } else {
 	$user = fopen("Users/users.txt", "a");
-	fwrite($user, "$email|$name|$pw\n");
+	fwrite($user, "\n$email|$name|$pw");
 	fclose($user);
 	echo "Registration succesful!";
 } ?>
