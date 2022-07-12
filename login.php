@@ -18,23 +18,12 @@ function test_input($data) {
 	return $data;
 }
 
-//Functie check_existing_mail om mail te matchen in users.txt
+//Functie check_user om gebruikersdata te vergelijken met users.txt
 
-function check_existing_mail($data) {
-	$checkfile = fread(fopen("Users/users.txt", "r"), filesize("Users/users.txt"));
-	if(strstr($checkfile, $data) !== False) {
-		return True;
-	} else {
-		return False;
-	}
-	$checkfile = fclose("Users/users.txt");
-}
-
-//Functie check_password om wachtwoord te vergelijken met users.txt
-
-function check_password($data) {
+function check_user($data) {
 	$file = fopen("Users/users.txt", "r");
 	$read = fread($file, filesize("Users/users.txt"));
+	$read = preg_replace('~[\r\n]+~', '|', $read);
 	$array = explode("|", $read);
 	if (in_array($data, $array)) {
 		return True;
@@ -52,7 +41,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			$emailerr = "Invalid e-mail";
 		} else {
-			if (check_existing_mail($email) == False){
+			if (check_user($email) == False){
 				$emailerr = "Incorrect e-mail";
 			}
 		}
@@ -61,7 +50,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		$pwerr = "Password is required";
 	} else {
 		$pw = test_input($_POST["pw"]);
-		if (check_password($pw) == False) {
+		if (check_user($pw) == False) {
 			$pwerr = "Incorrect password";
 		}
 	}

@@ -33,6 +33,9 @@ function showResponsePage($page){ //Weergave van de pagina
 		case 'Register';
 		  include 'register.php';
 		  break;
+		case 'Login';
+		  include 'login.php';
+		  break;
 		default; 
 		  include 'home.php';
 	}

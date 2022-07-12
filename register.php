@@ -92,7 +92,7 @@ if(!$valid) { ?>
  </form>
 <?php } else {
 	$user = fopen("Users/users.txt", "a");
-	fwrite($user, "\n$email|$name|$pw");
+	fwrite($user, "\n$email|$name|$pw|");
 	fclose($user);
 	echo "Registration succesful!";
 } ?>
