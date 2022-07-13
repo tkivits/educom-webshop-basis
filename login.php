@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-
 <html>
 <body>
 
 <?php 
 //Variabelen
 $emailerr = $pwerr = "";
-$email = $pw = "";
-$valid = False;
+$email = $pw = $pw_check = "";
+$login = False;
 
 //Functie test_input
 
@@ -33,6 +32,18 @@ function check_user($data) {
 	fclose($file);
 }
 
+//Functie match_password om wachtwoord te vergelijken met users.txt
+
+function check_password($data) {
+	$file = fopen("Users/users.txt", "r");
+	$read = fread($file, filesize("Users/users.txt"));
+	$read = preg_replace('~[\r\n]+~', '|', $read);
+	$array = explode("|", $read);
+	$pw_check = $array[array_search($data, $array)+2];
+	fclose ($file);
+	return $pw_check;
+}
+
 if($_SERVER["REQUEST_METHOD"] == "POST") {
 	if (empty($_POST["email"])) {
 		$emailerr = "E-mail is required";
@@ -42,7 +53,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 			$emailerr = "Invalid e-mail";
 		} else {
 			if (check_user($email) == False){
-				$emailerr = "Incorrect e-mail";
+				$emailerr = "Unknown e-mail";
+			} else {
+				$pw_check = check_password($email);
 			}
 		}
 	}
@@ -50,17 +63,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		$pwerr = "Password is required";
 	} else {
 		$pw = test_input($_POST["pw"]);
-		if (check_user($pw) == False) {
-			$pwerr = "Incorrect password";
-		}
+	}
+	if ($pw !== $pw_check) {
+		$pwerr = "E-mail doesn't match password";
 	}
 	if(empty($emailerr) && empty($pwerr)) {
-		$valid = True;
+		$login = True;
 	}
 }
 
 //showLoginForm
-if (!$valid) { ?>
+if (!$login) { ?>
 <form class="form" method="post" action="<?php echo htmlspecialchars('?page=Login');?>">
   <div><label for="email">E-mail:</label>
     <input type="email" id="email" name="email" value="<?php echo $email;?>">
