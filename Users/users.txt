@@ -1,4 +1,2 @@
 [email]|[naam]|[wachtwoord]
 coach@man-kind.nl|Geert Weggemans|halt!
-t.kivits@hotmail.com|Teun Kivits|t|
-t.kivits@hotmail.nl|Teun Kivit|t|
