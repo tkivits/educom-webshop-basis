@@ -32,7 +32,7 @@ function check_user($data) {
 	fclose($file);
 }
 
-//Functie match_password om wachtwoord te vergelijken met users.txt
+//Functie check_password om wachtwoord te vergelijken met users.txt
 
 function check_password($data) {
 	$file = fopen("Users/users.txt", "r");
@@ -42,6 +42,17 @@ function check_password($data) {
 	$pw_check = $array[array_search($data, $array)+2];
 	fclose ($file);
 	return $pw_check;
+}
+
+//Functie get_name om naam op te halen uit users.txt
+function get_name($data) {
+	$file = fopen("Users/users.txt", "r");
+	$read = fread($file, filesize("Users/users.txt"));
+	$read = preg_replace('~[\r\n]+~', '|', $read);
+	$array = explode("|", $read);
+	$get_name = $array[array_search($data, $array)+1];
+	fclose ($file);
+	return $get_name;
 }
 
 if($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -82,7 +93,10 @@ if (!$login) { ?>
     <input type="password" id="pw" name="pw" value="<?php echo $pw;?>">
     <span class="error">* <?php echo $pwerr;?></span></div>
 <input type="submit" value="Login">
-<?php } ?>
+<?php } else {
+	$_SESSION['name'] = get_name($email);
+	$_SESSION['page'] = 'Home';
+} ?>
 
 </body>
 </html>

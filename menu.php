@@ -8,7 +8,7 @@
   <li><a href="?page=About">About</a></li>
   <li><a href="?page=Contact">Contact</a></li>
   <li><a href="?page=Register">Register</a></li>
-  <li><a href="?page=Login">Login</a></li> 
+  <li><a href="?page=Login">Login</a></li>
 </ul>
 
 </body>

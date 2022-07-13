@@ -1,3 +1,7 @@
+<?php
+session_start()
+?>
+
 <!DOCTYPE html>
 
 <html>
@@ -7,6 +11,10 @@
 <body>
 
 <?php
+//globale variabelen
+$_SESSION['name'] = "";
+$_SESSION['page'] = "";
+
 function getRequestedPage(){ //Pagina ophalen
 	if(!isset($_GET['page'])){
 		return 'Home';
@@ -16,10 +24,10 @@ function getRequestedPage(){ //Pagina ophalen
 	}
 }
 
-function showResponsePage($page){ //Weergave van de pagina
-	echo '<h1 class="header">'.$page.'</h1>';
+function showResponsePage($data){ //Weergave van de pagina
+	echo '<h1 class="header">'.$data.'</h1>';
 	Include("menu.php");
-	switch($page)
+	switch($data)
 	{
 		case 'Home';
 		  include 'home.php';
@@ -43,8 +51,11 @@ function showResponsePage($page){ //Weergave van de pagina
 }
 
 
-$page = getRequestedPage();
-showResponsePage($page); ?> 
+$_SESSION['page'] = getRequestedPage();
+showResponsePage($_SESSION['page']); 
+echo $_SESSION['name'];
+echo $_SESSION['page'];
+echo session_id(); ?> 
 
 </body>
 </html>
