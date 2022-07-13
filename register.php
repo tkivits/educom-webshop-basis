@@ -1,3 +1,7 @@
+<?php
+session_start()
+?>
+
 <!DOCTYPE html>
 
 <html>
@@ -71,7 +75,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		$valid = True;
 	}
 }
+?>
 
+<ul class="menu">
+  <li><a href="?page=Home">Home</a></li>
+  <li><a href="?page=About">About</a></li>
+  <li><a href="?page=Contact">Contact</a></li>
+  <?php if (!$_SESSION['login']) { ?>
+  <li><a href="?page=Register">Register</a></li>
+  <li><a href="?page=Login">Login</a></li>
+  <?php } else { ?>
+  <li><a href="?page=Logout">Logout <?php echo $_SESSION['name'] ?></a></li>
+  <?php } ?>
+</ul>
+
+<?php
 // showRegisterForm
 if(!$valid) { ?>
 <div><span class="error">Fields with a * are required</span></div> 
@@ -94,7 +112,7 @@ if(!$valid) { ?>
 	$user = fopen("Users/users.txt", "a");
 	fwrite($user, "\n$email|$name|$pw|");
 	fclose($user);
-	echo "Registration succesful!";
+	echo '<meta http-equiv="refresh" content="0; URL=?page=Login">';
 } ?>
 
 </body>

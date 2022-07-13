@@ -1,7 +1,3 @@
-<?php
-session_start()
-?>
-
 <!DOCTYPE html>
 
 <html>
@@ -11,9 +7,6 @@ session_start()
 <body>
 
 <?php
-//globale variabelen
-$_SESSION['name'] = "";
-$_SESSION['page'] = "";
 
 function getRequestedPage(){ //Pagina ophalen
 	if(!isset($_GET['page'])){
@@ -26,7 +19,6 @@ function getRequestedPage(){ //Pagina ophalen
 
 function showResponsePage($data){ //Weergave van de pagina
 	echo '<h1 class="header">'.$data.'</h1>';
-	Include("menu.php");
 	switch($data)
 	{
 		case 'Home';
@@ -44,6 +36,9 @@ function showResponsePage($data){ //Weergave van de pagina
 		case 'Login';
 		  include 'login.php';
 		  break;
+		 case 'Logout';
+		  include 'logout.php';
+		  break;
 		default; 
 		  include 'home.php';
 	}
@@ -51,11 +46,9 @@ function showResponsePage($data){ //Weergave van de pagina
 }
 
 
-$_SESSION['page'] = getRequestedPage();
-showResponsePage($_SESSION['page']); 
-echo $_SESSION['name'];
-echo $_SESSION['page'];
-echo session_id(); ?> 
+$page = getRequestedPage();
+showResponsePage($page); 
+?> 
 
 </body>
 </html>

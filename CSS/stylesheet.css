@@ -15,17 +15,12 @@ body {
 .menu {
 	list-style-type: none;
 	padding: 0px;
-}
-.menu li {
 	display: inline-block;
 	padding: 5px;
 	border: 1px solid darkblue;
 	border-radius: 2px;
 	background-color: blue;
-}
-.menu li > a {
 	color: white;
-	text-decoration: none;
 }
 .foot {
 	color: white;

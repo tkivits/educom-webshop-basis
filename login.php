@@ -1,3 +1,7 @@
+<?php
+session_start()
+?>
+
 <!DOCTYPE html>
 <html>
 <body>
@@ -79,12 +83,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		$pwerr = "E-mail doesn't match password";
 	}
 	if(empty($emailerr) && empty($pwerr)) {
-		$login = True;
+		$_SESSION['login'] = True;
 	}
-}
+}?>
 
-//showLoginForm
-if (!$login) { ?>
+<ul class="menu">
+  <li><a href="?page=Home">Home</a></li>
+  <li><a href="?page=About">About</a></li>
+  <li><a href="?page=Contact">Contact</a></li>
+  <?php if (!$_SESSION['login']) { ?>
+  <li><a href="?page=Register">Register</a></li>
+  <li><a href="?page=Login">Login</a></li>
+  <?php } else { ?>
+  <li><a href="?page=Logout">Logout <?php echo $_SESSION['name'] ?></a></li>
+  <?php } ?>
+</ul>
+
+
+<?php //showLoginForm
+if (!$_SESSION['login']) { ?>
 <form class="form" method="post" action="<?php echo htmlspecialchars('?page=Login');?>">
   <div><label for="email">E-mail:</label>
     <input type="email" id="email" name="email" value="<?php echo $email;?>">
@@ -95,7 +112,7 @@ if (!$login) { ?>
 <input type="submit" value="Login">
 <?php } else {
 	$_SESSION['name'] = get_name($email);
-	$_SESSION['page'] = 'Home';
+	echo '<meta http-equiv="refresh" content="0; URL=?page=Home">';
 } ?>
 
 </body>
