@@ -7,6 +7,11 @@ session_start()
 <body>
 
 <?php 
+
+//Variabelen voor sessie
+$_SESSION['login'] = False;
+$_SESSION['name'] = "";
+
 //Variabelen
 $emailerr = $pwerr = "";
 $email = $pw = $pw_check = "";
