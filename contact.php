@@ -7,6 +7,8 @@ session_start()
 <body>
 
 <?php
+
+
 //variabelen
 $salerr = $namerr = $emailerr = $phonerr = $compreferr = $messerr = "";
 $sal = $name = $email = $phone = $compref = $mess = "";
@@ -14,63 +16,7 @@ $valid = False;
 
 //variabelen verwerken
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  if(empty($_POST["salutation"])) {
-    $salerr = "Salutation is required";
-  } else {
-    $sal = test_input($_POST["salutation"]);
-  }
-  
-  if(empty($_POST["name"])) {
-    $namerr = "Name is required";
-  } else { 
-  $name = test_input($_POST["name"]);
-  if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
-    $namerr = "Only letters and spaces are allowed";
-    }
-  }
-  
-  if(empty($_POST["email"])) {
-    $emailerr = "E-mail is required";
-  } else {
-    $email = test_input($_POST["email"]);
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $emailerr = "Invalid e-mail";
-    }
-  }
-  
-  if(empty($_POST["phone"])) {
-    $phonerr = "Phone number is required";
-  } else {
-    $phone = test_input($_POST["phone"]);
-	if (!preg_match("/^0[0-9]{1,3}-{0,1}[0-9]{6,8}$/",$phone)) {
-		$phonerr = "Invalid phone number";
-	}
-  }
-  
-  if(empty($_POST["compref"])) {
-    $compreferr = "Communication preference is required";
-  } else {
-    $compref = test_input($_POST["compref"]);
-  }
-  
-  if(empty($_POST["mess"])) {
-    $messerr = "A message is required";
-  } else {
-    $mess = test_input($_POST["mess"]);
-  }
-  
-//Als het formulier geen errors heeft bezoeker naar bedankpagina sturen
-  if(empty($salerr) && empty($namerr) && empty($emailerr) && empty($phonerr) && empty($compreferr) && empty($messagerr)) {
-    $valid = True;
-  }
-}
-
-//functie test_input
-function test_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  return $data;
+  testContact();
 }
 ?>
 
