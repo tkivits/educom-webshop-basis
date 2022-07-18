@@ -19,12 +19,6 @@ $login = False;
 
 //Functie test_input
 
-function test_input($data) {
-	$data = trim($data);
-	$data = stripslashes($data);
-	$data = htmlspecialchars($data);
-	return $data;
-}
 
 //Functie check_user om gebruikersdata te vergelijken met users.txt
 
@@ -91,19 +85,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 		$_SESSION['login'] = True;
 	}
 }?>
-
-<ul class="menu">
-  <li><a href="?page=Home">Home</a></li>
-  <li><a href="?page=About">About</a></li>
-  <li><a href="?page=Contact">Contact</a></li>
-  <?php if (!$_SESSION['login']) { ?>
-  <li><a href="?page=Register">Register</a></li>
-  <li><a href="?page=Login">Login</a></li>
-  <?php } else { ?>
-  <li><a href="?page=Logout">Logout <?php echo $_SESSION['name'] ?></a></li>
-  <?php } ?>
-</ul>
-
 
 <?php //showLoginForm
 if (!$_SESSION['login']) { ?>
