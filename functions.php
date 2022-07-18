@@ -9,7 +9,7 @@ session_start()
 
 <?php
 //Variabelen
-$salerr = $namerr = $emailerr = $phonerr = $compreferr = $messerr = $pwerr = $pwrepeaterr = "";
+$salErr = $namErr = $emailErr = $phonErr = $comprefErr = $messErr = $pwErr = $pwRepeatErr = "";
 
 //showMenu
 function showMenu() {?>
@@ -38,7 +38,7 @@ function showAboutPage() {
 
 //showContactPage
 function showContactPage() {
-	global $salerr, $namerr, $emailerr, $phonerr, $compreferr, $messerr;
+	global $salErr, $namErr, $emailErr, $phonErr, $comprefErr, $messErr;
 	include 'contact.php';
 }
 
@@ -49,14 +49,19 @@ function showContactThanksPage() {
 
 //showRegisterPage
 function showRegisterPage() {
-	global $namerr, $emailerr, $pwerr, $pwrepeaterr;
+	global $namErr, $emailErr, $pwErr, $pwRepeatErr;
 	include 'register.php';
 }
 
 //showLoginPage
 function showLoginPage() {
-	global $emailerr, $pwerr;
+	global $emailErr, $pwErr;
 	include 'login.php';
+}
+
+//showFooter
+function showFooter() {
+	include 'footer.php';
 }
 
 //testInput
@@ -69,48 +74,48 @@ function testInput($data) {
 
 //testContact
 function testContact() {
-	global $salerr, $namerr, $emailerr, $phonerr, $compreferr, $messerr;
+	global $salErr, $namErr, $emailErr, $phonErr, $comprefErr, $messErr;
 	if($_SERVER["REQUEST_METHOD"] == "POST") {
 	  if(empty($_POST["sal"])) {
-      $salerr = "Salutation is required";
+      $salErr = "Salutation is required";
       } else {
       $sal = testInput($_POST["sal"]);
       }
       if(empty($_POST["name"])) {
-        $namerr = "Name is required";
+        $namErr = "Name is required";
       } else { 
       $name = testInput($_POST["name"]);
       if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
-        $namerr = "Only letters and spaces are allowed";
+        $namErr = "Only letters and spaces are allowed";
         }
       }
       if(empty($_POST["email"])) {
-        $emailerr = "E-mail is required";
+        $emailErr = "E-mail is required";
       } else {
         $email = testInput($_POST["email"]);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-          $emailerr = "Invalid e-mail";
+          $emailErr = "Invalid e-mail";
         }
 	  }
       if(empty($_POST["phone"])) {
-        $phonerr = "Phone number is required";
+        $phonErr = "Phone number is required";
       } else {
         $phone = testInput($_POST["phone"]);
 	    if (!preg_match("/^0[0-9]{1,3}-{0,1}[0-9]{6,8}$/",$phone)) {
-		    $phonerr = "Invalid phone number";
+		    $phonErr = "Invalid phone number";
 	    }
       }
       if(empty($_POST["compref"])) {
-        $compreferr = "Communication preference is required";
+        $comprefErr = "Communication preference is required";
       } else {
         $compref = testInput($_POST["compref"]);
       }
       if(empty($_POST["mess"])) {
-        $messerr = "A message is required";
+        $messErr = "A message is required";
       } else {
         $mess = testInput($_POST["mess"]);
       }
-      if(empty($salerr) && empty($namerr) && empty($emailerr) && empty($phonerr) && empty($compreferr) && empty($messerr)) {
+      if(empty($salErr) && empty($namErr) && empty($emailErr) && empty($phonErr) && empty($comprefErr) && empty($messErr)) {
         return True;
       }
 	}
@@ -132,47 +137,121 @@ function checkUser($data) {
 
 //checkRegistration
 function checkRegistration() {
-	global $namerr, $emailerr, $pwerr, $pwrepeaterr;
+	global $namErr, $emailErr, $pwErr, $pwRepeatErr;
 	if($_SERVER["REQUEST_METHOD"] == "POST") {
 	  if (empty($_POST["name"])) {
-		  $namerr = "Name is required";
+		  $namErr = "Name is required";
 	  } else {
 		  $name = testInput($_POST["name"]);
 		  if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
-          $namerr = "Only letters and spaces are allowed";
+          $namErr = "Only letters and spaces are allowed";
 		  }
 	  }
 	  if (empty($_POST["email"])) {
-		  $emailerr = "E-mail is required";
+		  $emailErr = "E-mail is required";
 	  } else {
 		  $email = testInput($_POST["email"]);
 		  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			  $emailerr = "Invalid e-mail";
+			  $emailErr = "Invalid e-mail";
 		  } else {
 			  if (checkUser($email) == True) {
-				  $emailerr = "E-mail already exists";
+				  $emailErr = "E-mail already exists";
 			  }
 		  }
 	  }
 	  if (empty($_POST["pw"])) {
-		  $pwerr = "Password is required";
+		  $pwErr = "Password is required";
 	  } else {
 		  $pw = testInput($_POST["pw"]);
 	  }
 	  if (empty($_POST["pwrepeat"])) {
-		  $pwrepeaterr = "Please repeat your password";
+		  $pwRepeatErr = "Please repeat your password";
 	  } else {
 		  $pwrepeat = testInput($_POST["pwrepeat"]);
 		  if ($pw !== $pwrepeat) {
-			  $pwrepeaterr = "Entered passwords do not match";
+			  $pwRepeatErr = "Entered passwords do not match";
 		  }
 	  }
-	  if (empty($namerr) && empty($emailerr) && empty($pwerr) && empty($pwrepeaterr)) {
+	  if (empty($namErr) && empty($emailErr) && empty($pwErr) && empty($pwRepeatErr)) {
 		  $user = fopen("Users/users.txt", "a");
 		  fwrite($user, "\n$email|$name|$pw");
 		  fclose($user);
 		  return True;
 	  }
+	}
+}
+
+//checkPassword
+function checkPassword($data) {
+	$file = fopen("Users/users.txt", "r");
+	$read = fread($file, filesize("Users/users.txt"));
+	$read = preg_replace('~[\r\n]+~', '|', $read);
+	$array = explode("|", $read);
+	$pw_check = $array[array_search($data, $array)+2];
+	fclose ($file);
+	return $pw_check;
+}
+
+//getName
+function getName($data) {
+	$file = fopen("Users/users.txt", "r");
+	$read = fread($file, filesize("Users/users.txt"));
+	$read = preg_replace('~[\r\n]+~', '|', $read);
+	$array = explode("|", $read);
+	$getName = $array[array_search($data, $array)+1];
+	fclose ($file);
+	return $getName;
+}
+
+//logInUser
+
+function logInUser() {
+	global $emailErr, $pwErr;
+	$pw = $pwCheck = "";
+	if($_SERVER["REQUEST_METHOD"] == "POST") {
+	  if (empty($_POST["email"])) {
+		  $emailErr = "E-mail is required";
+	  } else {
+		  $email = testInput($_POST["email"]);
+		  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			  $emailErr = "Invalid e-mail";
+		  } else {
+			  if (checkUser($email) == False){
+				  $emailErr = "Unknown e-mail";
+			  } else {
+				  $pwCheck = checkPassword($email);
+			  }
+		  }
+	  }
+	  if (empty($_POST["pw"])) {
+		  $pwErr = "Password is required";
+	  } else {
+		  $pw = testInput($_POST["pw"]);
+	  }
+	  if ($pw !== $pwCheck) {
+		  $pwErr = "E-mail doesn't match password";
+	  }
+	  if(empty($emailErr) && empty($pwErr)) {
+		  $_SESSION['login'] = True;
+		  $_SESSION['email'] = $email;
+		  $_SESSION['name'] = getName($email);
+		  return True;
+	  }
+	}
+}
+
+//logOutUser
+function logOutUser() {
+	session_unset();
+}
+
+//getRequestedPage
+function getRequestedPage(){
+	if(!isset($_GET['page'])){
+		return 'Home';
+	}
+	else {
+		return $_GET['page'];
 	}
 }
 
@@ -232,9 +311,9 @@ function showResponsePage($data){
 		  showLoginPage();
 		  break;
 		default; 
-		  include 'home.php';
+		  showHomePage();
 	}
-	Include("footer.php");
+	showFooter();
 }
 
 ?>

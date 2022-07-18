@@ -12,8 +12,8 @@ require "functions.php";
 
 $page = getRequestedPage();
 $data = processRequest($page);
-var_dump($data);
-showResponsePage($data); 
+showResponsePage($data);
+
 ?> 
 
 </body>
