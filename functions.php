@@ -1,14 +1,15 @@
+<?php
+session_start()
+?>
+
 <!DOCTYPE html>
 
 <html>
-<head>
-<link rel="stylesheet" href="CSS/stylesheet.css">
-</head>
 <body>
 
 <?php
 //Variabelen
-$namerr = $emailerr = $pwerr = $pwrepeaterr = "";
+$salerr = $namerr = $emailerr = $phonerr = $compreferr = $messerr = $pwerr = $pwrepeaterr = "";
 
 //showMenu
 function showMenu() {?>
@@ -16,7 +17,7 @@ function showMenu() {?>
       <li><a href="?page=Home">Home</a></li>
       <li><a href="?page=About">About</a></li>
       <li><a href="?page=Contact">Contact</a></li>
-      <?php if (!$_SESSION['login']) { ?>
+      <?php if (!isset($_SESSION['login'])) { ?>
       <li><a href="?page=Register">Register</a></li>
       <li><a href="?page=Login">Login</a></li>
       <?php } else { ?>
@@ -36,7 +37,15 @@ function showAboutPage() {
 }
 
 //showContactPage
+function showContactPage() {
+	global $salerr, $namerr, $emailerr, $phonerr, $compreferr, $messerr;
+	include 'contact.php';
+}
 
+//showContactThanksPage
+function showContactThanksPage() {
+	include 'contactthanks.php';
+}
 
 //showRegisterPage
 function showRegisterPage() {
@@ -44,8 +53,14 @@ function showRegisterPage() {
 	include 'register.php';
 }
 
+//showLoginPage
+function showLoginPage() {
+	global $emailerr, $pwerr;
+	include 'login.php';
+}
+
 //testInput
-function test_input($data) {
+function testInput($data) {
   $data = trim($data);
   $data = stripslashes($data);
   $data = htmlspecialchars($data);
@@ -54,74 +69,75 @@ function test_input($data) {
 
 //testContact
 function testContact() {
-	if(empty($_POST["salutation"])) {
-    $salerr = "Salutation is required";
-  } else {
-    $sal = test_input($_POST["salutation"]);
-  }
-  
-  if(empty($_POST["name"])) {
-    $namerr = "Name is required";
-  } else { 
-  $name = test_input($_POST["name"]);
-  if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
-    $namerr = "Only letters and spaces are allowed";
-    }
-  }
-  
-  if(empty($_POST["email"])) {
-    $emailerr = "E-mail is required";
-  } else {
-    $email = test_input($_POST["email"]);
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $emailerr = "Invalid e-mail";
-    }
-  }
-  
-  if(empty($_POST["phone"])) {
-    $phonerr = "Phone number is required";
-  } else {
-    $phone = test_input($_POST["phone"]);
-	if (!preg_match("/^0[0-9]{1,3}-{0,1}[0-9]{6,8}$/",$phone)) {
-		$phonerr = "Invalid phone number";
+	global $salerr, $namerr, $emailerr, $phonerr, $compreferr, $messerr;
+	if($_SERVER["REQUEST_METHOD"] == "POST") {
+	  if(empty($_POST["sal"])) {
+      $salerr = "Salutation is required";
+      } else {
+      $sal = testInput($_POST["sal"]);
+      }
+      if(empty($_POST["name"])) {
+        $namerr = "Name is required";
+      } else { 
+      $name = testInput($_POST["name"]);
+      if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
+        $namerr = "Only letters and spaces are allowed";
+        }
+      }
+      if(empty($_POST["email"])) {
+        $emailerr = "E-mail is required";
+      } else {
+        $email = testInput($_POST["email"]);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+          $emailerr = "Invalid e-mail";
+        }
+	  }
+      if(empty($_POST["phone"])) {
+        $phonerr = "Phone number is required";
+      } else {
+        $phone = testInput($_POST["phone"]);
+	    if (!preg_match("/^0[0-9]{1,3}-{0,1}[0-9]{6,8}$/",$phone)) {
+		    $phonerr = "Invalid phone number";
+	    }
+      }
+      if(empty($_POST["compref"])) {
+        $compreferr = "Communication preference is required";
+      } else {
+        $compref = testInput($_POST["compref"]);
+      }
+      if(empty($_POST["mess"])) {
+        $messerr = "A message is required";
+      } else {
+        $mess = testInput($_POST["mess"]);
+      }
+      if(empty($salerr) && empty($namerr) && empty($emailerr) && empty($phonerr) && empty($compreferr) && empty($messerr)) {
+        return True;
+      }
 	}
-  }
-  
-  if(empty($_POST["compref"])) {
-    $compreferr = "Communication preference is required";
-  } else {
-    $compref = test_input($_POST["compref"]);
-  }
-  
-  if(empty($_POST["mess"])) {
-    $messerr = "A message is required";
-  } else {
-    $mess = test_input($_POST["mess"]);
-  }
-  if(empty($salerr) && empty($namerr) && empty($emailerr) && empty($phonerr) && empty($compreferr) && empty($messagerr)) {
-    $valid = True;
-  }
 }
 
-//checkExistingMail
-function checkExistingMail($data) {
-	$checkfile = fread(fopen("Users/users.txt", "r"), filesize("Users/users.txt"));
-	if(strstr($checkfile, $data) !== False) {
+//checkUser
+function checkUser($data) {
+	$file = fopen("Users/users.txt", "r");
+	$read = fread($file, filesize("Users/users.txt"));
+	$read = preg_replace('~[\r\n]+~', '|', $read);
+	$array = explode("|", $read);
+	if (in_array($data, $array)) {
 		return True;
 	} else {
 		return False;
 	}
-	$checkfile = fclose("Users/users.txt");
+	fclose($file);
 }
 
 //checkRegistration
 function checkRegistration() {
 	global $namerr, $emailerr, $pwerr, $pwrepeaterr;
-	  if($_SERVER["REQUEST_METHOD"] == "POST") {
+	if($_SERVER["REQUEST_METHOD"] == "POST") {
 	  if (empty($_POST["name"])) {
 		  $namerr = "Name is required";
 	  } else {
-		  $name = test_input($_POST["name"]);
+		  $name = testInput($_POST["name"]);
 		  if (!preg_match("/^[a-zA-Z-' ]*$/",$name)) {
           $namerr = "Only letters and spaces are allowed";
 		  }
@@ -129,11 +145,11 @@ function checkRegistration() {
 	  if (empty($_POST["email"])) {
 		  $emailerr = "E-mail is required";
 	  } else {
-		  $email = test_input($_POST["email"]);
+		  $email = testInput($_POST["email"]);
 		  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			  $emailerr = "Invalid e-mail";
 		  } else {
-			  if (checkExistingMail($email) == True) {
+			  if (checkUser($email) == True) {
 				  $emailerr = "E-mail already exists";
 			  }
 		  }
@@ -141,12 +157,12 @@ function checkRegistration() {
 	  if (empty($_POST["pw"])) {
 		  $pwerr = "Password is required";
 	  } else {
-		  $pw = test_input($_POST["pw"]);
+		  $pw = testInput($_POST["pw"]);
 	  }
 	  if (empty($_POST["pwrepeat"])) {
 		  $pwrepeaterr = "Please repeat your password";
 	  } else {
-		  $pwrepeat = test_input($_POST["pwrepeat"]);
+		  $pwrepeat = testInput($_POST["pwrepeat"]);
 		  if ($pw !== $pwrepeat) {
 			  $pwrepeaterr = "Entered passwords do not match";
 		  }
@@ -160,23 +176,13 @@ function checkRegistration() {
 	}
 }
 
-//getRequestedPage
-function getRequestedPage(){
-	if(!isset($_GET['page'])){
-		return 'Home';
-	}
-	else {
-		return $_GET['page'];
-	}
-}
-
 //processRequest
 function processRequest($page) {
 	switch($page)
 	{
-		case 'contact';
+		case 'Contact';
 		$data = testContact();
-		if (isset($data)) {
+		if ($data == True) {
 			$page = 'Thanks';
 		}
 		break;
@@ -186,7 +192,17 @@ function processRequest($page) {
 			$page = 'Login';
 		}
 		break;
+		case 'Login';
+		$data = logInUser();
+		if ($data == True) {
+			$page = 'Home';
 		}
+		break;
+		case 'Logout';
+		logOutUser();
+		$page = 'Home';
+		break;
+	}
 	$data = $page;
 	return $data;
 }
@@ -204,19 +220,16 @@ function showResponsePage($data){
 		  showAboutPage();
 		  break;
 		case 'Contact';
-		  showContactForm();
+		  showContactPage();
 		  break;
 		case 'Thanks';
-		  showContactThanks();
+		  showContactThanksPage();
 		  break;
 		case 'Register';
 		  showRegisterPage();
 		  break;
 		case 'Login';
-		  include 'login.php';
-		  break;
-		 case 'Logout';
-		  include 'logout.php';
+		  showLoginPage();
 		  break;
 		default; 
 		  include 'home.php';
